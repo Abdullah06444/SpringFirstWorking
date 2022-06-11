@@ -43,10 +43,7 @@ public class IlController {
     @GetMapping("/{id}")
     public ResponseEntity<Il>getIl(@PathVariable String id){
 
-        Il result = iller.stream()
-                .filter(il -> il.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("bu il bulunamadi"));
+        Il result = getIlById(id);
         return new ResponseEntity<>(result, OK);
 
     /*  // standart yöntemde çağırma
@@ -73,5 +70,24 @@ public class IlController {
         //Postman arayüzünde yeni ili newadd yapmak için post komutu dışında öncelikle Header sayfasında
         // "Key=Content-Type" ve "Value=application/json" yapınca 415 unsupported media type hatası almayız
         return new ResponseEntity<>(newIl, CREATED);
+    }
+
+    @PutMapping("/{id}") // get ile post birleşmiş hali gibidir.
+    public ResponseEntity<Void> getIl(@PathVariable String id, @RequestBody Il newIl){
+
+        Il oldIl = getIlById(id);
+        oldIl.setName(newIl.getName());
+        oldIl.setCreateDate(new Date());
+
+        return new ResponseEntity<>(OK);
+    }
+
+    // don't repeat yourself stratejisi gereği bu kod snippet bir daha kullanacağımızdan metot olarak tanımladık.
+    private Il getIlById(String id){
+
+        return iller.stream()
+                .filter(il -> il.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("bu il bulunamadi"));
     }
 }
