@@ -2,14 +2,16 @@ package de.abdullahgur.ilservice.module;
 
 import lombok.AllArgsConstructor;
 import lombok.Data; // bunu ekledikten sonra intellijIdea idemiz bize lombok library eklemek ister misin
-import lombok.NoArgsConstructor;
-// şeklinde uyarı verir ve ekleriz projeye
+import lombok.NoArgsConstructor; // şeklinde uyarı verir ve ekleriz projeye
+
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class Il {
 
+    private Date createDate;
     private String id;
     private String name;
 
