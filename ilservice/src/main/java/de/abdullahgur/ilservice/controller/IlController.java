@@ -1,6 +1,8 @@
 package de.abdullahgur.ilservice.controller;
 
 import de.abdullahgur.ilservice.module.Il;
+import de.abdullahgur.ilservice.service.IlService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +15,17 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController // normal classta spring bootta otomatik kontrol olması için bu annotation ekliyoruz.
 @RequestMapping("/iller") // kontrol hangi URL oluşabileceğini belirlemedir.
+@AllArgsConstructor
 public class IlController {
 
-    private static final List<Il> iller = new ArrayList<>();
+    private final IlService ilService;
+    /*private List<Il> iller = new ArrayList<>();
+    // gereksiz kod satırları
+    public IlController(IlService ilService){
+        this.ilService = ilService;
+    }*/
+
+    /*private static final List<Il> iller = new ArrayList<>();
 
     public IlController(){
 
@@ -29,7 +39,7 @@ public class IlController {
             iller.add(il2);
             iller.add(il3);
         }
-    }
+    }*/
 
     @GetMapping
     //sadece yukarıdaki annotationlar ile birşey elde edilmez. Bunun için bir get metodu lazım.
@@ -37,7 +47,7 @@ public class IlController {
 
 
         // HttpStatus.OK kodu kısa tutmak adına static tanımlıyoruz
-        return new ResponseEntity<>(iller, OK);
+        return new ResponseEntity<>(ilService.getIller() /*iller*/, OK);
     }
 
     @GetMapping("/{id}")
