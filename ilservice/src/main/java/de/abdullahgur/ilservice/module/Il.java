@@ -1,8 +1,9 @@
 package de.abdullahgur.ilservice.module;
 
 import lombok.AllArgsConstructor;
-import lombok.Data; // bunu ekledikten sonra intellijIdea idemiz bize lombok library eklemek ister misin
-import lombok.NoArgsConstructor; // şeklinde uyarı verir ve ekleriz projeye
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 
@@ -11,7 +12,8 @@ import java.util.Date;
 @AllArgsConstructor
 public class Il {
 
-    private Date createDate;
+    @Id
+    private Date createDate = new Date();
     private String id;
     private String name;
 

@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +44,6 @@ public class IlController {
     //sadece yukarıdaki annotationlar ile birşey elde edilmez. Bunun için bir get metodu lazım.
     public ResponseEntity<List<Il>> getIller(){
 
-
         // HttpStatus.OK kodu kısa tutmak adına static tanımlıyoruz
         return new ResponseEntity<>(ilService.getIller() /*iller*/, OK);
     }
@@ -53,8 +51,7 @@ public class IlController {
     @GetMapping("/{id}")
     public ResponseEntity<Il>getIl(@PathVariable String id){
 
-        Il result = getIlById(id);
-        return new ResponseEntity<>(result, OK);
+        return new ResponseEntity<>(getIlById(id), OK);
 
     /*  // standart yöntemde çağırma
         Il result = null;
@@ -74,12 +71,12 @@ public class IlController {
     @PostMapping    // postmapping halihazırdaki List'imize 4. bir il eklemeye yarar.
     public ResponseEntity<Il> createIl(@RequestBody Il newIl) { // iki şey verilir, ya void ya da String ile oluşturduğumuz object id'sini verebiliriz
         // ya da oluşturmak istediğimiz Object kendisini Il vermek isteyebiliriz
-        newIl.setCreateDate(new Date());
-        iller.add(newIl);
+        //newIl.setCreateDate(new Date());
+        //iller.add(newIl);
 
         //Postman arayüzünde yeni ili newadd yapmak için post komutu dışında öncelikle Header sayfasında
         // "Key=Content-Type" ve "Value=application/json" yapınca 415 unsupported media type hatası almayız
-        return new ResponseEntity<>(newIl, CREATED);
+        return new ResponseEntity<>(ilService.createIl(newIl), CREATED);
     }
 
     @PutMapping("/{id}") // get ile post birleşmiş hali gibidir.
@@ -89,24 +86,28 @@ public class IlController {
         oldIl.setName(newIl.getName());
         oldIl.setCreateDate(new Date());
 
+        ilService.updateIl(id, newIl);
+
         return new ResponseEntity<>(OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteIl(@PathVariable String id){
 
-        Il il = getIlById(id);
-        iller.remove(il);
+        //Il il = getIlById(id);
+        //iller.remove(il);
 
+        ilService.deleteIl(id);
         return new ResponseEntity<>(OK);
     }
 
     // don't repeat yourself stratejisi gereği bu kod snippet bir daha kullanacağımızdan metot olarak tanımladık.
     private Il getIlById(String id){
 
-        return iller.stream()
+        return ilService.getIlById(id);
+        /*return iller.stream()
                 .filter(il -> il.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("bu il bulunamadi"));
+                .orElseThrow(() -> new RuntimeException("bu il bulunamadi"));*/
     }
 }
