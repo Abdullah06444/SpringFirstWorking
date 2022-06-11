@@ -82,6 +82,15 @@ public class IlController {
         return new ResponseEntity<>(OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteIl(@PathVariable String id){
+
+        Il il = getIlById(id);
+        iller.remove(il);
+
+        return new ResponseEntity<>(OK);
+    }
+
     // don't repeat yourself stratejisi gereği bu kod snippet bir daha kullanacağımızdan metot olarak tanımladık.
     private Il getIlById(String id){
 
